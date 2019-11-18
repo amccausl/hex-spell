@@ -4,7 +4,7 @@
     BOARD_HEIGHT,
     board_tiles,
     matched_words,
-  } from './stores.js';
+  } from './stores.mjs';
   import GameTimer from "./GameTimer.svelte";
   import ScoreCard from "./ScoreCard.svelte";
   import TileBoard from "./TileBoard.svelte";
@@ -61,7 +61,6 @@
   }
 
   board_tiles.set( generateTiles( Math.random() ) )
-  matched_words.set( [ "hello", "world" ] )
 </script>
 
 <main>

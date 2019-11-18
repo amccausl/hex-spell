@@ -1,5 +1,5 @@
 <script>
-  import { matched_words } from './stores.js';
+  import { matched_words } from './stores.mjs';
   let matched_words_value;
 
 	const unsubscribe = matched_words.subscribe( value => {
