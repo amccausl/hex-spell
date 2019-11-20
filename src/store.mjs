@@ -81,13 +81,15 @@ export function isAdjacent( a_tile_index, b_tile_index ) {
 
   console.info( `checking ${a_row_index},${a_col_index} and ${b_row_index},${b_col_index}` )
 
-  if( a_row_index === b_row_index ) {
-    return Math.abs( b_col_index - a_col_index ) === 1
-  }
+  // Check for above and below
   if( a_col_index === b_col_index ) {
-    return Math.abs( b_col_index - a_col_index ) === 1
+    return Math.abs( a_row_index - b_row_index ) === 1
   }
-  // @todo add logic for odd or even adjacency
+  // Check for beside
+  // if( a_row_index === b_row_index || ( a_col_index % 2 ? a_row_index - b_row_index : b_row_index - a_row_index ) === 1 ) {
+  if( a_row_index === b_row_index || b_row_index - a_row_index === 1 - 2 * ( a_col_index % 2 ) ) {
+    return Math.abs( a_col_index - b_col_index ) === 1
+  }
   return false
 }
 
