@@ -1,14 +1,15 @@
 <script>
   import {
-		BOARD_WIDTH,
-		BOARD_HEIGHT,
+    BOARD_WIDTH,
+    BOARD_HEIGHT,
     board_tiles,
     getTileIndexPosition,
     getTilePositionIndex,
+    isAdjacent,
     isWord,
     matched_words,
-  } from './stores.mjs'
-	import HexTile from "./HexTile.svelte"
+  } from './store.mjs'
+  import HexTile from "./HexTile.svelte"
 
   let board_tiles_value
   let path = []
@@ -16,13 +17,13 @@
   // @todo can this be a typed array?
   let selected_flags = Array( BOARD_WIDTH * BOARD_HEIGHT ).fill( false )
 
-	const unsubscribe = board_tiles.subscribe( value => {
-		board_tiles_value = value
+  const unsubscribe = board_tiles.subscribe( value => {
+    board_tiles_value = value
   })
 
   function getLetter( index ) {
     const [ row_index, col_index ] = getTileIndexPosition( index )
-    return board_tiles_value[ row_index ][ col_index ]
+    return board_tiles_value[ row_index ][ col_index ].toUpperCase()
   }
 
   function clearPath() {
@@ -62,18 +63,19 @@
 
   function handleHexOver( row_index, col_index ) {
     if( is_active ) {
-      const value = getTilePositionIndex( row_index, col_index );
+      const value = getTilePositionIndex( row_index, col_index )
       const path_index = path.indexOf( value )
       console.info( "handleHexOver", row_index, col_index, path_index )
       if( path_index === -1 ) {
-        path.push( value );
-        path = path;
-        selected_flags[ getTilePositionIndex( row_index, col_index ) ] = true;
-        console.info( "handleHexOver", row_index, col_index, path );
+        const tile_index = getTilePositionIndex( row_index, col_index )
+        if( path.length === 0 || isAdjacent( tile_index, path[ path.length - 1 ] ) ) {
+          path.push( value ); path = path
+          selected_flags[ tile_index ] = true
+          console.info( "handleHexOver", row_index, col_index, path )
+        }
       } else if( path_index === path.length - 2 ) {
-        const index = path.pop();
-        path = path;
-        selected_flags[ index ] = false;
+        const index = path.pop(); path = path
+        selected_flags[ index ] = false
       }
     }
   }

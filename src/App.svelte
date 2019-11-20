@@ -4,7 +4,7 @@
     BOARD_HEIGHT,
     board_tiles,
     matched_words,
-  } from './stores.mjs';
+  } from './store.mjs';
   import GameTimer from "./GameTimer.svelte";
   import ScoreCard from "./ScoreCard.svelte";
   import TileBoard from "./TileBoard.svelte";
@@ -63,9 +63,9 @@
   board_tiles.set( generateTiles( Math.random() ) )
 </script>
 
-<main>
-  <h1>HexSpell</h1>
-  <div class="main-layout">
+<main class="page">
+  <h1 class="page-title">HexSpell</h1>
+  <div class="page-layout">
     <TileBoard />
     <div class="right-pane">
       <GameTimer />
@@ -74,15 +74,15 @@
   </div>
 </main>
 
-<style>
-  main {
+<style type="text/scss">
+  .page {
     text-align: center;
     padding: 1em;
     max-width: 240px;
     margin: 0 auto;
   }
 
-  h1 {
+  .page-title {
     color: #ff3e00;
     text-transform: uppercase;
     font-size: 4em;
@@ -90,17 +90,17 @@
   }
 
   @media (min-width: 640px) {
-    main {
+    .page {
       max-width: none;
     }
   }
 
-  .main-layout {
+  .page-layout {
     display: flex;
     justify-content: center;
   }
 
   .right-pane {
-    width: 400px;
+    width: 250px;
   }
 </style>

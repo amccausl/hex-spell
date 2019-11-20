@@ -1,5 +1,5 @@
 <script>
-  import { getGameTimer } from "./stores.mjs"
+  import { getGameTimer } from "./store.mjs"
 
   const elapsed = getGameTimer()
   $: remaining = 120 - $elapsed
@@ -10,5 +10,5 @@
   Timer: { remaining < 0 ? "0:00" : timer }
 </section>
 
-<style>
+<style type="text/scss">
 </style>

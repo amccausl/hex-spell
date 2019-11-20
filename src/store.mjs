@@ -3,14 +3,25 @@ import { derived, readable, writable } from "svelte/store"
 export const BOARD_WIDTH = 8
 export const BOARD_HEIGHT = 6
 
-function createMatchedWords() {
-	const { subscribe, set, update } = writable( [] );
+export const WORD_SCORES = [
+  10, // Length 3
+  20,
+  40,
+  70,
+  100,
+  130,
+  160,
+  200,
+]
 
-	return {
+function createMatchedWords() {
+  const { subscribe, set, update } = writable( [] );
+
+  return {
     subscribe,
     push: ( word ) => update( arr => [ ...arr, word ] ),
-		reset: () => set( [] )
-	};
+    reset: () => set( [] )
+  }
 }
 
 export const matched_words = createMatchedWords()
@@ -18,16 +29,16 @@ export const matched_words = createMatchedWords()
 export const board_tiles = writable( [] )
 
 export const time = readable( new Date(), function start( set ) {
-	const interval = setInterval(
+  const interval = setInterval(
     () => {
       set( new Date() )
     },
     1000
   )
 
-	return function stop() {
-		clearInterval( interval )
-	}
+  return function stop() {
+    clearInterval( interval )
+  }
 })
 
 export function getGameTimer() {
@@ -47,6 +58,21 @@ export function getTileIndexPosition( tile_index ) {
 
 export function getTilePositionIndex( row_index, col_index ) {
   return row_index * BOARD_WIDTH + col_index
+}
+
+export function getWordScore( word ) {
+  let score_index = word.length - 3
+  let offset = 0
+  while( true ) {
+    let search_index = word.indexOf( "QU", offset )
+    if( search_index === -1 ) {
+      break
+    }
+    score_index--
+    offset = search_index + 1
+  }
+
+  return WORD_SCORES[ score_index ]
 }
 
 export function isAdjacent( a_tile_index, b_tile_index ) {

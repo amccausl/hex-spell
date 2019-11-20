@@ -2,7 +2,6 @@
   export let is_even
   export let is_selected
   export let tile
-
 </script>
 
 <div class="hex" class:hex--even={ is_even } class:hex--selected={ is_selected }
@@ -26,6 +25,7 @@ $hex__size: 60px;
   margin-right: -26px;
   margin-bottom: -50px;
   clip-path: polygon(93px 0%, 100% 50%, 93px 100%, 29px 100%, 0% 50%, 29px 0%);
+  user-select: none;
 
   &::before {
     content: " ";

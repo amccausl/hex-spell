@@ -3,8 +3,10 @@ import tap from "tap"
 import {
   BOARD_WIDTH,
   BOARD_HEIGHT,
+  WORD_SCORES,
   getTileIndexPosition,
   getTilePositionIndex,
+  getWordScore,
   isAdjacent,
 } from "../src/store.mjs"
 
@@ -40,3 +42,10 @@ tap.test( "tile adjacency is correct", ( t ) => {
   // Is not adjacent to anything else
   t.end()
 } )
+
+tap.test( "check scoring for words", ( t ) => {
+  t.equal( getWordScore( "TIP" ), WORD_SCORES[ 0 ] )
+  t.equal( getWordScore( "QUOTE" ), WORD_SCORES[ 1 ], "QU is 1 tile" )
+
+  t.end()
+})
