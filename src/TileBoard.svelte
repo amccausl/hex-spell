@@ -11,7 +11,6 @@
   } from './store.mjs'
   import HexTile from "./HexTile.svelte"
 
-  console.info('game', game)
   const { score_card, board_tiles } = game
 
   let path = []
@@ -48,10 +47,8 @@
     if( path.length <= 2 ) {
       return
     }
-    // @todo move to store
     const word = path.map( getLetter ).join( "" )
-    if( isWord( word ) ) {
-      // @todo update board
+    if( game.isWord( word.toLowerCase() ) ) {
       board_tiles.remove( path )
       score_card.push( word )
     }

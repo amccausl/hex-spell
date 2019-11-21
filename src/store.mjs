@@ -32,6 +32,19 @@ export const AVAILABLE_TILES = [
 export const BOARD_WIDTH = 7
 export const BOARD_HEIGHT = 6
 
+let dictionary
+async function loadDictionary() {
+  const response = await fetch( "data/wordlist.txt" )
+  const wordlist = await response.text()
+  const word_set = new Set( wordlist.split( "\n" ) )
+  dictionary = {
+    isWord: ( text ) => {
+      return word_set.has( text )
+    }
+  }
+}
+loadDictionary()
+
 export const WORD_SCORES = [
   10, // Length 3
   20,
@@ -170,5 +183,6 @@ export function startGame( options ) {
     board_tiles,
     score_card,
     timer,
+    isWord: ( word ) => dictionary.isWord( word ),
   }
 }

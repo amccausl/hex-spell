@@ -11,7 +11,6 @@
   const game = startGame()
 
   let board_tiles
-  console.info('game.board_tiles', game.board_tiles)
   game.board_tiles.subscribe( value => {
     board_tiles = value
   })
