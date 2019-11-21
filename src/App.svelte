@@ -2,74 +2,28 @@
   import {
     BOARD_WIDTH,
     BOARD_HEIGHT,
-    board_tiles,
-    matched_words,
-  } from './store.mjs';
-  import GameTimer from "./GameTimer.svelte";
-  import ScoreCard from "./ScoreCard.svelte";
-  import TileBoard from "./TileBoard.svelte";
+    startGame,
+  } from "./store.mjs"
+  import GameTimer from "./GameTimer.svelte"
+  import ScoreCard from "./ScoreCard.svelte"
+  import TileBoard from "./TileBoard.svelte"
 
-  const AVAILABLE_TILES = [
-    ...Array( 24 ).fill( "E" ),
-    ...Array( 16 ).fill( "A" ),
-    ...Array( 15 ).fill( "O" ),
-    ...Array( 15 ).fill( "T" ),
-    ...Array( 13 ).fill( "I" ),
-    ...Array( 13 ).fill( "N" ),
-    ...Array( 13 ).fill( "R" ),
-    ...Array( 10 ).fill( "S" ),
-    ...Array( 7 ).fill( "L" ),
-    ...Array( 5 ).fill( "U" ),
-    ...Array( 8 ).fill( "D" ),
-    ...Array( 5 ).fill( "G" ),
-    ...Array( 6 ).fill( "C" ),
-    ...Array( 6 ).fill( "M" ),
-    ...Array( 4 ).fill( "B" ),
-    ...Array( 4 ).fill( "P" ),
-    ...Array( 5 ).fill( "H" ),
-    ...Array( 4 ).fill( "F" ),
-    ...Array( 4 ).fill( "W" ),
-    ...Array( 4 ).fill( "Y" ),
-    ...Array( 3 ).fill( "V" ),
-    ...Array( 2 ).fill( "K" ),
-    ...Array( 2 ).fill( "J" ),
-    ...Array( 2 ).fill( "X" ),
-    ...Array( 2 ).fill( "Qu" ),
-    ...Array( 2 ).fill( "Z" ),
-  ]
+  const game = startGame()
 
-  function shuffleArray( array ) {
-    for( let i = array.length - 1; i > 0; i-- ) {
-      const j = Math.floor( Math.random() * ( i + 1 ) );
-      [ array[ i ], array[ j ] ] = [ array[ j ], array[ i ] ];
-    }
-  }
-
-  function generateTiles( seed ) {
-    // @todo use seed
-    const tiles = [ ...AVAILABLE_TILES ]
-    shuffleArray( tiles )
-
-    const result = []
-    for( let i = 0; i < BOARD_HEIGHT; i++ ) {
-      result.push( tiles.splice( tiles.length - BOARD_WIDTH, BOARD_WIDTH ) )
-    }
-
-    console.info( 'result', result)
-
-    return result
-  }
-
-  board_tiles.set( generateTiles( Math.random() ) )
+  let board_tiles
+  console.info('game.board_tiles', game.board_tiles)
+  game.board_tiles.subscribe( value => {
+    board_tiles = value
+  })
 </script>
 
 <main class="page">
   <h1 class="page-title">HexSpell</h1>
   <div class="page-layout">
-    <TileBoard />
+    <TileBoard game={ game } />
     <div class="right-pane">
-      <GameTimer />
-      <ScoreCard matched_words={ matched_words } />
+      <GameTimer timer={ game.timer } />
+      <ScoreCard score_card={ game.score_card } />
     </div>
   </div>
 </main>

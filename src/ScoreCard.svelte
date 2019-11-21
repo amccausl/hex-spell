@@ -1,16 +1,20 @@
 <script>
+  export let score_card
+
   import {
-    matched_words,
     getWordScore,
   } from "./store.mjs"
   let matched_words_value
+  let score_value
 
-  const unsubscribe = matched_words.subscribe( value => {
-    matched_words_value = value
+  const unsubscribe = score_card.subscribe( ( { matched_words, score } ) => {
+    score_value = score
+    matched_words_value = matched_words
   })
 </script>
 
 <section class="score-card">
+  <div>Score: { score_value }</div>
   <ul class="word-list">
     {#each matched_words_value as word}
       <li class="word-list__item">
@@ -24,6 +28,7 @@
 <style type="text/scss">
   .word-list {
     list-style: none;
+    padding-inline-start: 0;
 
     &__item {
       display: flex;

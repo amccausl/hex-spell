@@ -1,64 +1,69 @@
 <script>
+  export let game
+
   import {
     BOARD_WIDTH,
     BOARD_HEIGHT,
-    board_tiles,
     getTileIndexPosition,
     getTilePositionIndex,
     isAdjacent,
     isWord,
-    matched_words,
   } from './store.mjs'
   import HexTile from "./HexTile.svelte"
 
-  let board_tiles_value
+  console.info('game', game)
+  const { score_card, board_tiles } = game
+
   let path = []
   let is_active = false
   // @todo can this be a typed array?
   let selected_flags = Array( BOARD_WIDTH * BOARD_HEIGHT ).fill( false )
 
+  console.info('board_tiles', board_tiles)
+  let board_tiles_value
   const unsubscribe = board_tiles.subscribe( value => {
     board_tiles_value = value
   })
 
   function getLetter( index ) {
     const [ row_index, col_index ] = getTileIndexPosition( index )
-    return board_tiles_value[ row_index ][ col_index ].toUpperCase()
+    return board_tiles_value[ col_index ][ row_index ].toUpperCase()
   }
 
   function clearPath() {
     for( const item of path ) {
-      selected_flags[ item ] = false;
+      selected_flags[ item ] = false
     }
-    path = [];
+    path = []
   }
 
   function handleBoardLeave() {
-    is_active = false;
-    clearPath();
+    is_active = false
+    clearPath()
   }
 
   function handleMouseUp() {
     console.info('handleMouseUp')
-    is_active = false;
+    is_active = false
     if( path.length <= 2 ) {
       return
     }
+    // @todo move to store
     const word = path.map( getLetter ).join( "" )
     if( isWord( word ) ) {
       // @todo update board
-      matched_words.push( word )
+      score_card.push( word )
     }
-    clearPath();
+    clearPath()
   }
 
   function handleHexPress( row_index, col_index ) {
-    console.info( "handleHexPress", row_index, col_index );
-    is_active = true;
-    clearPath();
+    console.info( "handleHexPress", row_index, col_index )
+    is_active = true
+    clearPath()
 
-    path = [ getTilePositionIndex( row_index, col_index ) ];
-    selected_flags[ getTilePositionIndex( row_index, col_index ) ] = true;
+    path = [ getTilePositionIndex( row_index, col_index ) ]
+    selected_flags[ getTilePositionIndex( row_index, col_index ) ] = true
   }
 
   function handleHexOver( row_index, col_index ) {
@@ -85,10 +90,10 @@
   on:mouseleave|preventDefault={ () => handleBoardLeave() }
   on:mouseup|preventDefault={ () => handleMouseUp() }
 >
-  {#each board_tiles_value as row_tiles, row_index}
-    <div class="board__row">
-      {#each row_tiles as tile, col_index}
-        <HexTile tile={ tile } is_even={ col_index % 2 } is_selected={ selected_flags[ getTilePositionIndex( row_index, col_index ) ] }
+  {#each board_tiles_value as col_tiles, col_index}
+    <div class="board__col" class:board__col--even={ col_index % 2 }>
+      {#each col_tiles as tile, row_index}
+        <HexTile tile={ tile } is_selected={ selected_flags[ getTilePositionIndex( row_index, col_index ) ] }
           on:mousedown={ () => handleHexPress( row_index, col_index ) }
           on:mouseover={ () => handleHexOver( row_index, col_index ) }
         />
@@ -104,11 +109,17 @@
 
   .board {
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: row;
     padding-right: 30px;
-  }
 
-  .board__row {
-    clear: left;
+    &__col {
+      display: flex;
+      flex-direction: column-reverse;
+      margin-left: -26px;
+    }
+
+    &__col--even {
+      margin-bottom: 53px;
+    }
   }
 </style>
