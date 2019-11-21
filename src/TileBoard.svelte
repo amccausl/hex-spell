@@ -52,6 +52,7 @@
     const word = path.map( getLetter ).join( "" )
     if( isWord( word ) ) {
       // @todo update board
+      board_tiles.remove( path )
       score_card.push( word )
     }
     clearPath()

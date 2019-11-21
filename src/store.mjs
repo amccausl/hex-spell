@@ -50,21 +50,39 @@ function shuffleArray( array ) {
   }
 }
 
-export function generateTiles( seed ) {
+function createBoardTiles( options ) {
   // @todo use seed
-  const tiles = [ ...AVAILABLE_TILES ]
+  let tiles = [ ...AVAILABLE_TILES ]
   shuffleArray( tiles )
 
-  const result = []
+  const board_tiles = []
   for( let i = 0; i < BOARD_WIDTH; i++ ) {
-    result.push( tiles.splice( tiles.length - BOARD_HEIGHT, BOARD_HEIGHT ) )
+    board_tiles.push( tiles.splice( tiles.length - BOARD_HEIGHT, BOARD_HEIGHT ) )
   }
 
-  return result
+  const { subscribe, update } = writable( board_tiles );
+
+  return {
+    subscribe,
+    remove: ( path ) => update( board_tiles => {
+      for( const tile_index of path ) {
+        const [ row_index, col_index ] = getTileIndexPosition( tile_index )
+        board_tiles[ col_index ][ row_index ] = null
+      }
+      for( let i = 0; i < BOARD_WIDTH; i++ ) {
+        if( board_tiles[ i ].includes( null ) ) {
+          board_tiles[ i ] = board_tiles[ i ].filter( value => value )
+          const count = BOARD_HEIGHT - board_tiles[ i ].length
+          board_tiles[ i ].push( ...tiles.splice( tiles.length - count, count ) )
+        }
+      }
+      return [ ...board_tiles ]
+    }),
+  }
 }
 
 function createScoreCard() {
-  const { subscribe, set, update } = writable( { score: 0, matched_words: [] } );
+  const { subscribe, set, update } = writable( { score: 0, matched_words: [] } )
 
   return {
     subscribe,
@@ -144,17 +162,13 @@ export function isWord( text ) {
 }
 
 export function startGame( options ) {
-  const board_tiles = writable( [] )
-  board_tiles.set( generateTiles( Math.random() ) )
-
+  const board_tiles = createBoardTiles( options )
   const score_card = createScoreCard()
   const timer = getGameTimer()
 
-  const game = {
+  return {
     board_tiles,
     score_card,
     timer,
   }
-
-  return game
 }
