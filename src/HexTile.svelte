@@ -20,10 +20,6 @@ $hex__color--selected: red;
 $hex__size: 60px;
 
 .hex {
-  margin-bottom: 4px;
-  clip-path: polygon(93px 0%, 100% 50%, 93px 100%, 29px 100%, 0% 50%, 29px 0%);
-  user-select: none;
-
   &::before {
     content: " ";
     float: left;

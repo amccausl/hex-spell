@@ -28,10 +28,12 @@ export const AVAILABLE_TILES = [
   ...Array( 2 ).fill( "Qu" ),
   ...Array( 2 ).fill( "Z" ),
 ]
+export const AVAILABLE_TILES_COUNT = AVAILABLE_TILES.length
 
 export const BOARD_WIDTH = 7
-export const BOARD_HEIGHT = 6
+export const BOARD_HEIGHT = 6 * 2
 
+// @todo this is an unsafe async
 let dictionary
 async function loadDictionary() {
   const response = await fetch( "data/wordlist.txt" )
@@ -68,9 +70,15 @@ function createBoardTiles( options ) {
   let tiles = [ ...AVAILABLE_TILES ]
   shuffleArray( tiles )
 
-  const board_tiles = []
-  for( let i = 0; i < BOARD_WIDTH; i++ ) {
-    board_tiles.push( tiles.splice( tiles.length - BOARD_HEIGHT, BOARD_HEIGHT ) )
+  const board_tile_indexes = Array( BOARD_WIDTH )
+  const board_tiles = Array( BOARD_WIDTH ).fill( null ).map( () => [] )
+
+  for( let j = 0; j < BOARD_HEIGHT; j++ ) {
+    for( let i = 0; i < BOARD_WIDTH; i++ ) {
+      const index = j * BOARD_WIDTH + i
+      board_tiles[ i ].push( { index, value: tiles[ index % AVAILABLE_TILES_COUNT ] } )
+      board_tile_indexes[ i ] = index
+    }
   }
 
   const { subscribe, update } = writable( board_tiles );
@@ -86,7 +94,13 @@ function createBoardTiles( options ) {
         if( board_tiles[ i ].includes( null ) ) {
           board_tiles[ i ] = board_tiles[ i ].filter( value => value )
           const count = BOARD_HEIGHT - board_tiles[ i ].length
-          board_tiles[ i ].push( ...tiles.splice( tiles.length - count, count ) )
+          for( let j = 0; j < count; j++ ) {
+            board_tile_indexes[ i ] += BOARD_WIDTH
+            board_tiles[ i ].push({
+              index: board_tile_indexes[ i ],
+              value: tiles[ board_tile_indexes[ i ] % AVAILABLE_TILES_COUNT ],
+            })
+          }
         }
       }
       return [ ...board_tiles ]
@@ -139,7 +153,6 @@ export function getTilePositionIndex( row_index, col_index ) {
 }
 
 export function getWordScore( word ) {
-  console.info('getWordScore', word)
   let score_index = word.length - 3
   let offset = 0
   while( true ) {
@@ -167,11 +180,6 @@ export function isAdjacent( a_tile_index, b_tile_index ) {
     return Math.abs( a_col_index - b_col_index ) === 1
   }
   return false
-}
-
-export function isWord( text ) {
-  // @todo
-  return true
 }
 
 export function startGame( options ) {
