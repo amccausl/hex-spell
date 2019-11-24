@@ -19,7 +19,7 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "start": "sirv public",
+    "start": "sirv docs",
     "test": "$(npm bin)/tap test"
   }
 }

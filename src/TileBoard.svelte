@@ -103,9 +103,10 @@
     display: flex;
     flex-direction: row;
     padding-left: 27px;
+    min-width: 660px;
     max-height: 641px;
     overflow: hidden;
-    border: solid black 2px;
+    border: solid #333 2px;
 
     &__col {
       display: flex;
