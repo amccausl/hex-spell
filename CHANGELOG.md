@@ -5,10 +5,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
 
+### Changed
+- new dictionary words
+
 ## [0.0.1]
 
 ### Added
 - initial prototype for game board
 
-[Unreleased]: https://github.com/amccausl/hex-spell/compare/master...develop
+[Unreleased]: https://github.com/amccausl/hex-spell/compare/v0.0.1...master
 [0.0.1]: https://github.com/amccausl/hex-spell/compare/gh-pages...v0.0.1
