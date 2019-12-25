@@ -8,22 +8,32 @@
   import ScoreCard from "./ScoreCard.svelte"
   import TileBoard from "./TileBoard.svelte"
 
-  const game = startGame()
-
+  let is_playing = false
+  let game
   let board_tiles
-  game.board_tiles.subscribe( value => {
-    board_tiles = value
-  })
+
+  function clickStartGame() {
+    is_playing = true
+    game = startGame()
+
+    game.board_tiles.subscribe( value => {
+      board_tiles = value
+    })
+  }
 </script>
 
 <main class="page">
   <h1 class="page-title">HexSpell</h1>
   <div class="page-layout">
-    <TileBoard game={ game } />
-    <div class="right-pane">
-      <GameTimer timer={ game.timer } />
-      <ScoreCard score_card={ game.score_card } />
-    </div>
+    {#if ! is_playing}
+      <button on:click={ clickStartGame }>Start Game</button>
+    {:else}
+      <TileBoard game={ game } />
+      <div class="right-pane">
+        <GameTimer timer={ game.timer } />
+        <ScoreCard score_card={ game.score_card } />
+      </div>
+    {/if}
   </div>
 </main>
 
@@ -55,5 +65,6 @@
 
   .right-pane {
     width: 250px;
+    padding-left: 20px;
   }
 </style>
