@@ -12,21 +12,24 @@
   } from './store.mjs'
   import HexTile from "./HexTile.svelte"
 
-  const { score_card, board_tiles } = game
-
   let path = []
   let is_active = false
   // @todo can this be a typed array?
   let selected_flags = Array( BOARD_WIDTH * BOARD_HEIGHT ).fill( false )
 
-  let board_tiles_value
-  const unsubscribe = board_tiles.subscribe( value => {
-    board_tiles_value = value
+  let board_tiles
+  const unsubscribeTile = $game.board_tiles.subscribe( value => {
+    board_tiles = value
+  })
+
+  let is_finished = false
+  const unsubscribeFinished = $game.is_finished.subscribe( value => {
+    is_finished = value
   })
 
   function getLetter( index ) {
     const [ row_index, col_index ] = getTileIndexPosition( index )
-    return board_tiles_value[ col_index ][ row_index ].value.toUpperCase()
+    return board_tiles[ col_index ][ row_index ].value.toUpperCase()
   }
 
   function clearPath() {
@@ -48,8 +51,8 @@
     }
     const word = path.map( getLetter ).join( "" )
     if( game.isWord( word.toLowerCase() ) ) {
-      board_tiles.remove( path )
-      score_card.push( word )
+      $game.board_tiles.remove( path )
+      $game.score_card.push( word )
     }
     clearPath()
   }
@@ -80,33 +83,38 @@
   }
 </script>
 
-<section class="board"
-  on:mouseleave|preventDefault={ () => handleBoardLeave() }
-  on:mouseup|preventDefault={ () => handleMouseUp() }
->
-  {#each board_tiles_value as col_tiles, col_index}
-    <div class="board__col" class:board__col--even={ col_index % 2 }>
-      {#each col_tiles as tile, row_index (tile.index)}
-        <div class="board__tile" animate:flip>
-          <HexTile tile={ tile.value } is_selected={ selected_flags[ getTilePositionIndex( row_index, col_index ) ] }
-            on:mousedown={ () => handleHexPress( row_index, col_index ) }
-            on:mouseover={ () => handleHexOver( row_index, col_index ) }
-          />
-        </div>
-      {/each}
-    </div>
-  {/each}
+<section class="board">
+  <div class="board-tiles"
+    on:mouseleave|preventDefault={ () => handleBoardLeave() }
+    on:mouseup|preventDefault={ () => handleMouseUp() }
+  >
+    {#each board_tiles as col_tiles, col_index}
+      <div class="board-tiles__col" class:board-tiles__col--even={ col_index % 2 }>
+        {#each col_tiles as tile, row_index (tile.index)}
+          <div class="board-tiles__tile" animate:flip>
+            <HexTile tile={ tile.value } is_selected={ selected_flags[ getTilePositionIndex( row_index, col_index ) ] }
+              on:mousedown={ () => handleHexPress( row_index, col_index ) }
+              on:mouseover={ () => handleHexOver( row_index, col_index ) }
+            />
+          </div>
+        {/each}
+      </div>
+    {/each}
+  </div>
 </section>
 
 <style type="text/scss">
   .board {
+    border: solid #333 2px;
+  }
+
+  .board-tiles {
     display: flex;
     flex-direction: row;
     padding-left: 27px;
     min-width: 660px;
     max-height: 641px;
     overflow: hidden;
-    border: solid #333 2px;
 
     &__col {
       display: flex;

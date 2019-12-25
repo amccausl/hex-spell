@@ -30,6 +30,7 @@ export const AVAILABLE_TILES = [
 ]
 export const AVAILABLE_TILES_COUNT = AVAILABLE_TILES.length
 
+export const GAME_TIMER = 180
 export const BOARD_WIDTH = 7
 export const BOARD_HEIGHT = 6 * 2
 
@@ -120,21 +121,20 @@ function createScoreCard() {
   }
 }
 
-export const time = readable( new Date(), function start( set ) {
-  const interval = setInterval(
-    () => {
-      set( new Date() )
-    },
-    1000
-  )
-
-  return function stop() {
-    clearInterval( interval )
-  }
-})
-
 export function getGameTimer() {
   const start = new Date();
+  const time = readable( new Date(), function start( set ) {
+    const interval = setInterval(
+      () => {
+        set( new Date() )
+      },
+      1000
+    )
+
+    return function stop() {
+      clearInterval( interval )
+    }
+  })
 
   return derived(
     time,
@@ -182,15 +182,26 @@ export function isAdjacent( a_tile_index, b_tile_index ) {
   return false
 }
 
-export function startGame( options ) {
-  const board_tiles = createBoardTiles( options )
-  const score_card = createScoreCard()
-  const timer = getGameTimer()
+export function createGame( options ) {
+  const { subscribe, update } = writable( { board_tiles: null, score_card_timer: null, is_finished: false } )
 
   return {
-    board_tiles,
-    score_card,
-    timer,
+    subscribe,
+    start: ( options ) => update( () => {
+      const board_tiles = createBoardTiles( options )
+      const score_card = createScoreCard()
+      const timer = getGameTimer()
+
+      return {
+        board_tiles,
+        score_card,
+        timer,
+        is_finished: derived(
+          timer,
+          $timer => $timer > GAME_TIMER
+        ),
+      }
+    } ),
     isWord: ( word ) => dictionary.isWord( word ),
   }
 }

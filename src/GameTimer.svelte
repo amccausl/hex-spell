@@ -1,6 +1,7 @@
 <script>
+  import { GAME_TIMER } from "./store.mjs"
   export let timer
-  $: remaining = 120 - $timer
+  $: remaining = GAME_TIMER - $timer
   $: timer_text = `${ Math.floor( remaining / 60 ) }:${ remaining % 60 < 10 ? "0" + ( remaining % 60 ) : remaining % 60 }`
 </script>
 
