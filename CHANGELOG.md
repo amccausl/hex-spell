@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
 
+## [0.0.2]
+
 ### Added
 - complete screen with restart
 
@@ -21,5 +23,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Added
 - initial prototype for game board
 
-[Unreleased]: https://github.com/amccausl/hex-spell/compare/v0.0.1...master
+[Unreleased]: https://github.com/amccausl/hex-spell/compare/v0.0.2...master
+[0.0.2]: https://github.com/amccausl/hex-spell/compare/v0.0.1...v0.0.2
 [0.0.1]: https://github.com/amccausl/hex-spell/compare/gh-pages...v0.0.1

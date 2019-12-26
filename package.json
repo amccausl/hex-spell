@@ -1,6 +1,6 @@
 {
   "name": "hex-spell",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "devDependencies": {
     "rollup": "1.27.14",
     "rollup-plugin-commonjs": "10.1.0",
