@@ -30,9 +30,9 @@ export const AVAILABLE_TILES = [
 ]
 export const AVAILABLE_TILES_COUNT = AVAILABLE_TILES.length
 
-export const GAME_TIMER = 180
-export const BOARD_WIDTH = 7
-export const BOARD_HEIGHT = 6 * 2
+export const GAME_TIMER = 120
+export const BOARD_WIDTH = 9
+export const BOARD_HEIGHT = 7 * 2
 
 // @todo this is an unsafe async
 let dictionary

@@ -5,9 +5,12 @@
   $: timer_text = `${ Math.floor( remaining / 60 ) }:${ remaining % 60 < 10 ? "0" + ( remaining % 60 ) : remaining % 60 }`
 </script>
 
-<section>
+<section class="game-timer">
   Timer: { remaining < 0 ? "0:00" : timer_text }
 </section>
 
 <style type="text/scss">
+  .game-timer {
+    font-size: 26px;
+  }
 </style>

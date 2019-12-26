@@ -10,6 +10,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ### Changed
 - new dictionary words
+- larger font
+- more neutral colours
+- bigger board
+- faster animations
+- 2 minute timer
 
 ## [0.0.1]
 

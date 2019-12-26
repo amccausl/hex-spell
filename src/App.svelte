@@ -48,10 +48,10 @@
 </script>
 
 <main class="page">
-  <h1 class="page-title">HexSpell</h1>
+  <h1 class="page-title">Hex-Spell</h1>
   <div class="page-layout">
     {#if ! is_playing}
-      <button on:click={ clickStartGame }>Start Game</button>
+      <button class="button" on:click={ clickStartGame }>Start Game</button>
     {:else}
       <TileBoard game={ game } />
       <div class="right-pane">
@@ -63,7 +63,7 @@
   {#if is_finished}
     <div class="board-overlay">
       <div class="board-score">
-        <button on:click={ clickRestart }>Restart</button>
+        <button class="button" on:click={ clickRestart }>Restart</button>
       </div>
     </div>
   {/if}
@@ -121,5 +121,13 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
+  }
+
+  .button {
+    font-size: 26px;
+    padding: 16px;
+    background-color: #DDC994;
+    border-color: #43363D;
+    cursor: pointer;
   }
 </style>

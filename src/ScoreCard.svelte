@@ -14,7 +14,7 @@
 </script>
 
 <section class="score-card">
-  <div>Score: { score_value }</div>
+  <div class="score-total">Score: { score_value }</div>
   <ul class="word-list">
     {#each matched_words_value as word}
       <li class="word-list__item">
@@ -26,7 +26,12 @@
 </section>
 
 <style type="text/scss">
+  .score-total {
+    font-size: 26px;
+  }
+
   .word-list {
+    font-size: 18px;
     list-style: none;
     padding-inline-start: 0;
 

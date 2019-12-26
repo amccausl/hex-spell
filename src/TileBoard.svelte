@@ -91,7 +91,7 @@
     {#each board_tiles as col_tiles, col_index}
       <div class="board-tiles__col" class:board-tiles__col--even={ col_index % 2 }>
         {#each col_tiles as tile, row_index (tile.index)}
-          <div class="board-tiles__tile" animate:flip>
+          <div class="board-tiles__tile" animate:flip="{{ duration: 400 }}">
             <HexTile tile={ tile.value } is_selected={ selected_flags[ getTilePositionIndex( row_index, col_index ) ] }
               on:mousedown={ () => handleHexPress( row_index, col_index ) }
               on:mouseover={ () => handleHexOver( row_index, col_index ) }
@@ -105,7 +105,7 @@
 
 <style type="text/scss">
   .board {
-    border: solid #333 2px;
+    border: solid #43363d 2px;
   }
 
   .board-tiles {
@@ -113,7 +113,7 @@
     flex-direction: row;
     padding-left: 27px;
     min-width: 660px;
-    max-height: 641px;
+    max-height: 730px;
     overflow: hidden;
 
     &__col {

@@ -15,8 +15,8 @@
 </div>
 
 <style type="text/scss">
-$hex__color: yellow;
-$hex__color--selected: red;
+$hex__color: #F2EEC3;
+$hex__color--selected: #D1A386;
 $hex__size: 60px;
 
 .hex {
@@ -46,6 +46,10 @@ $hex__size: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  &__text {
+    font-size: 32px;
   }
 
   &--selected {
