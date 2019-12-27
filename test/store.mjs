@@ -3,7 +3,7 @@ import tap from "tap"
 import {
   BOARD_WIDTH,
   BOARD_HEIGHT,
-  WORD_SCORES,
+  getAdjacentDirection,
   getTileIndexPosition,
   getTilePositionIndex,
   getWordScore,
@@ -43,9 +43,23 @@ tap.test( "tile adjacency is correct", ( t ) => {
   t.end()
 } )
 
+tap.test( "tile edge detection is correct", ( t ) => {
+  // Is adjacent to 6 hexes
+  const tile_index = getTilePositionIndex( 1, 4 )
+  t.equal( getAdjacentDirection( tile_index, getTilePositionIndex( 2, 5 ) ), 2, "2 o'clock" )
+  t.equal( getAdjacentDirection( tile_index, getTilePositionIndex( 1, 5 ) ), 4, "4 o'clock" )
+  t.equal( getAdjacentDirection( tile_index, getTilePositionIndex( 0, 4 ) ), 6, "6 o'clock" )
+  t.equal( getAdjacentDirection( tile_index, getTilePositionIndex( 1, 3 ) ), 8, "8 o'clock" )
+  t.equal( getAdjacentDirection( tile_index, getTilePositionIndex( 2, 3 ) ), 10, "10 o'clock" )
+  t.equal( getAdjacentDirection( tile_index, getTilePositionIndex( 2, 4 ) ), 0, "12 o'clock" )
+
+  // Is not adjacent to anything else
+  t.end()
+})
+
 tap.test( "check scoring for words", ( t ) => {
-  t.equal( getWordScore( "TIP" ), WORD_SCORES[ 0 ] )
-  t.equal( getWordScore( "QUOTE" ), WORD_SCORES[ 1 ], "QU is 1 tile" )
+  t.equal( getWordScore( "TIP" ), 10 )
+  t.equal( getWordScore( "QUOTE" ), 20, "QU is 1 tile" )
 
   t.end()
 })

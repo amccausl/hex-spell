@@ -6,6 +6,7 @@
   import {
     BOARD_WIDTH,
     BOARD_HEIGHT,
+    getAdjacentDirection,
     getTileIndexPosition,
     getTilePositionIndex,
     isAdjacent,
@@ -14,7 +15,6 @@
 
   let path = []
   let is_active = false
-  // @todo can this be a typed array?
   let selected_flags = Array( BOARD_WIDTH * BOARD_HEIGHT ).fill( false )
 
   let board_tiles
@@ -46,13 +46,12 @@
 
   function handleMouseUp() {
     is_active = false
-    if( path.length <= 2 ) {
-      return
-    }
-    const word = path.map( getLetter ).join( "" )
-    if( game.isWord( word.toLowerCase() ) ) {
-      $game.board_tiles.remove( path )
-      $game.score_card.push( word )
+    if( path.length >= 3 ) {
+      const word = path.map( getLetter ).join( "" )
+      if( game.isWord( word.toLowerCase() ) ) {
+        $game.board_tiles.remove( path )
+        $game.score_card.push( word )
+      }
     }
     clearPath()
   }
@@ -72,8 +71,8 @@
       if( path_index === -1 ) {
         const tile_index = getTilePositionIndex( row_index, col_index )
         if( path.length === 0 || isAdjacent( tile_index, path[ path.length - 1 ] ) ) {
+          selected_flags[ tile_index ] = getAdjacentDirection( tile_index, path[ path.length - 1 ] )
           path.push( value ); path = path
-          selected_flags[ tile_index ] = true
         }
       } else if( path_index === path.length - 2 ) {
         const index = path.pop(); path = path
@@ -92,7 +91,10 @@
       <div class="board-tiles__col" class:board-tiles__col--even={ col_index % 2 }>
         {#each col_tiles as tile, row_index (tile.index)}
           <div class="board-tiles__tile" animate:flip="{{ duration: 400 }}">
-            <HexTile tile={ tile.value } is_selected={ selected_flags[ getTilePositionIndex( row_index, col_index ) ] }
+            {#if typeof( selected_flags[ getTilePositionIndex( row_index, col_index ) ] ) !== "boolean"}
+              <div class="{ `board-tiles__edge board-tiles__edge--position-${ selected_flags[ getTilePositionIndex( row_index, col_index ) ] }` }"></div>
+            {/if}
+            <HexTile tile={ tile.value } is_selected={ selected_flags[ getTilePositionIndex( row_index, col_index ) ] !== false }
               on:mousedown={ () => handleHexPress( row_index, col_index ) }
               on:mouseover={ () => handleHexOver( row_index, col_index ) }
             />
@@ -112,7 +114,7 @@
     display: flex;
     flex-direction: row;
     padding-left: 27px;
-    min-width: 660px;
+    min-width: 846px;
     max-height: 730px;
     overflow: hidden;
 
@@ -129,8 +131,37 @@
 
     &__tile {
       margin-bottom: 4px;
-      clip-path: polygon(93px 0%, 100% 50%, 93px 100%, 29px 100%, 0% 50%, 29px 0%);
       user-select: none;
+      position: relative;
+    }
+
+    &__edge {
+      background-color: #D1A386;
+      width: 9px;
+      height: 20px;
+      position: absolute;
+      top: -10px;
+      right: 56px;
+
+      &--position-2 {
+        transform: translate(47px, 22px) rotate(57deg);
+      }
+
+      &--position-4 {
+        transform: translate(47px, 78px) rotate(125deg);
+      }
+
+      &--position-6 {
+        transform: translate(0px, 105px);
+      }
+
+      &--position-8 {
+        transform: translate(-47px, 78px) rotate(57deg)
+      }
+
+      &--position-10 {
+        transform: translate(-47px, 22px) rotate(125deg);
+      }
     }
   }
 </style>

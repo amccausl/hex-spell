@@ -48,17 +48,6 @@ async function loadDictionary() {
 }
 loadDictionary()
 
-export const WORD_SCORES = [
-  10, // Length 3
-  20,
-  40,
-  70,
-  100,
-  130,
-  160,
-  200,
-]
-
 function shuffleArray( array ) {
   for( let i = array.length - 1; i > 0; i-- ) {
     const j = Math.floor( Math.random() * ( i + 1 ) );
@@ -164,7 +153,15 @@ export function getWordScore( word ) {
     offset = search_index + 1
   }
 
-  return WORD_SCORES[ score_index ]
+  let score = 10
+  let increment = 10
+  while( score_index > 0 ) {
+    score_index--
+    score += increment
+    increment += 10
+  }
+
+  return score
 }
 
 export function isAdjacent( a_tile_index, b_tile_index ) {
@@ -178,6 +175,53 @@ export function isAdjacent( a_tile_index, b_tile_index ) {
   // Check for beside
   if( a_row_index === b_row_index || a_row_index - b_row_index === 1 - 2 * ( a_col_index % 2 ) ) {
     return Math.abs( a_col_index - b_col_index ) === 1
+  }
+  return false
+}
+
+export function getAdjacentDirection( a_tile_index, b_tile_index ) {
+  const [ a_row_index, a_col_index ] = getTileIndexPosition( a_tile_index )
+  const [ b_row_index, b_col_index ] = getTileIndexPosition( b_tile_index )
+
+  // Check for above and below
+  if( a_col_index === b_col_index ) {
+    if( a_row_index - b_row_index === -1 ) {
+      return 0
+    }
+    if ( a_row_index - b_row_index === 1 ) {
+      return 6
+    }
+    return false
+  }
+  // Same row depends on offset
+  if( a_row_index === b_row_index ) {
+    if( a_col_index - b_col_index === -1 ) {
+      return b_col_index % 2 === 0 ? 4 : 2
+    }
+    if( a_col_index - b_col_index === 1 ) {
+      return b_col_index % 2 === 0 ? 8 : 10
+    }
+    return false
+  }
+  // Offset rows are more complicated
+  if( b_col_index % 2 === 0 ) {
+    if( a_row_index - b_row_index === -1 ) {
+      if( a_col_index - b_col_index === 1 ) {
+        return 10
+      }
+      if( a_col_index - b_col_index === -1 ) {
+        return 2
+      }
+    }
+    return false
+  }
+  if( a_row_index - b_row_index === 1 ) {
+    if( a_col_index - b_col_index === 1 ) {
+      return 8
+    }
+    if( a_col_index - b_col_index === -1 ) {
+      return 4
+    }
   }
   return false
 }
