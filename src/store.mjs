@@ -239,10 +239,19 @@ export function createGame( options ) {
       return {
         board_tiles,
         score_card,
-        timer,
+        timer_text: derived(
+          timer,
+          $timer => {
+            const remaining = options.time_limit - $timer
+            if( remaining < 0 ) {
+              return "0:00"
+            }
+            return `${ Math.floor( remaining / 60 ) }:${ remaining % 60 < 10 ? "0" + ( remaining % 60 ) : remaining % 60 }`
+          }
+        ),
         is_finished: derived(
           timer,
-          $timer => $timer > GAME_TIMER
+          $timer => $timer > options.time_limit
         ),
       }
     } ),

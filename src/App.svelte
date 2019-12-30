@@ -12,6 +12,9 @@
   let is_finished = false
   let game = createGame()
   let board_tiles
+  let game_options = {
+    time_limit: 180,
+  }
 
   let unsubscribe = null
   game.subscribe( value => {
@@ -38,7 +41,7 @@
   })
 
   function clickStartGame() {
-    game.start()
+    game.start( game_options )
     is_finished = false
   }
 
@@ -51,11 +54,23 @@
   <h1 class="page-title">Hex-Spell</h1>
   <div class="page-layout">
     {#if ! is_playing}
-      <button class="button" on:click={ clickStartGame }>Start Game</button>
+      <form>
+        <button class="button" on:click={ clickStartGame }>Start Game</button>
+        <label>
+          Time Limit
+          <select bind:value={ game_options.time_limit }>
+            <option value={ 60 }>1:00</option>
+            <option value={ 120 }>2:00</option>
+            <option value={ 180 }>3:00</option>
+            <option value={ 240 }>4:00</option>
+            <option value={ 300 }>5:00</option>
+          </select>
+        </label>
+      </form>
     {:else}
       <TileBoard game={ game } />
       <div class="right-pane">
-        <GameTimer timer={ $game.timer } />
+        <GameTimer timer={ $game.timer_text } />
         <ScoreCard score_card={ $game.score_card } />
       </div>
     {/if}
