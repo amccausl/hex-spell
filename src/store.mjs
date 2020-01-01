@@ -48,6 +48,22 @@ async function loadDictionary() {
 }
 loadDictionary()
 
+export function getDefaultOptions() {
+  const default_options = {
+    time_limit: 180,
+  }
+
+  try {
+    const time_limit = window.localStorage.getItem( "options_time_limit" )
+    if( time_limit != null ) {
+      default_options.time_limit = parseInt( time_limit, 10 )
+    }
+  } catch( ex ) {
+  }
+
+  return default_options
+}
+
 function shuffleArray( array ) {
   for( let i = array.length - 1; i > 0; i-- ) {
     const j = Math.floor( Math.random() * ( i + 1 ) );

@@ -3,6 +3,7 @@
     BOARD_WIDTH,
     BOARD_HEIGHT,
     createGame,
+    getDefaultOptions,
   } from "./store.mjs"
   import GameTimer from "./GameTimer.svelte"
   import ScoreCard from "./ScoreCard.svelte"
