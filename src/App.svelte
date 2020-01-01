@@ -6,6 +6,7 @@
   } from "./store.mjs"
   import GameTimer from "./GameTimer.svelte"
   import ScoreCard from "./ScoreCard.svelte"
+  import Tailwindcss from "./Tailwindcss.svelte"
   import TileBoard from "./TileBoard.svelte"
 
   let is_playing = false
@@ -54,18 +55,24 @@
   <h1 class="page-title">Hex-Spell</h1>
   <div class="page-layout">
     {#if ! is_playing}
-      <form>
-        <button class="button" on:click={ clickStartGame }>Start Game</button>
-        <label>
-          Time Limit
-          <select bind:value={ game_options.time_limit }>
-            <option value={ 60 }>1:00</option>
-            <option value={ 120 }>2:00</option>
-            <option value={ 180 }>3:00</option>
-            <option value={ 240 }>4:00</option>
-            <option value={ 300 }>5:00</option>
-          </select>
-        </label>
+      <form class="w-full max-w-sm inline-block align-middle">
+        <div class="md:flex md:items-center mb-6">
+          <div class="md:w-1/2">
+            <label class="input-label md:text-right md:mb-0" for="options_time_limit">
+              Time Limit
+            </label>
+          </div>
+          <div class="md:w-1/2">
+            <select bind:value={ game_options.time_limit } id="options_time_limit" class="input-select">
+              <option value={ 60 }>1:00</option>
+              <option value={ 120 }>2:00</option>
+              <option value={ 180 }>3:00</option>
+              <option value={ 240 }>4:00</option>
+              <option value={ 300 }>5:00</option>
+            </select>
+          </div>
+        </div>
+        <button class="button button-primary" on:click={ clickStartGame }>Start Game</button>
       </form>
     {:else}
       <TileBoard game={ game } />
@@ -78,17 +85,17 @@
   {#if is_finished}
     <div class="board-overlay">
       <div class="board-score">
-        <button class="button" on:click={ clickRestart }>Restart</button>
+        <button class="button button-primary" on:click={ clickRestart }>Restart</button>
       </div>
     </div>
   {/if}
 </main>
+<Tailwindcss />
 
 <style type="text/scss">
   .page {
     text-align: center;
     padding: 1em;
-    max-width: 240px;
     margin: 0 auto;
   }
 
@@ -138,11 +145,48 @@
     justify-content: center;
   }
 
+  .input-label {
+    @apply
+      block
+      text-gray-500
+      mb-1
+      pr-4;
+  }
+
+  .input-select {
+    @apply
+      bg-gray-200
+      appearance-none
+      border-2
+      border-gray-200
+      w-full
+      py-2
+      px-4
+      text-gray-700
+      leading-tight;
+
+    &:focus {
+      @apply
+        outline-none
+        bg-white
+        border-primary;
+    }
+  }
+
   .button {
-    font-size: 26px;
-    padding: 16px;
-    background-color: #DDC994;
-    border-color: #43363D;
-    cursor: pointer;
+    @apply
+      text-2xl
+      py-2
+      px-4
+      border-2
+      border-black;
+
+    &-primary {
+      @apply bg-primary;
+
+      &:hover {
+        @apply bg-selected;
+      }
+    }
   }
 </style>
