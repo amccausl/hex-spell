@@ -4,6 +4,7 @@
     BOARD_HEIGHT,
     createGame,
     getDefaultOptions,
+    setDefaultTimeLimit,
   } from "./store.mjs"
   import GameTimer from "./GameTimer.svelte"
   import ScoreCard from "./ScoreCard.svelte"
@@ -14,9 +15,7 @@
   let is_finished = false
   let game = createGame()
   let board_tiles
-  let game_options = {
-    time_limit: 180,
-  }
+  let game_options = getDefaultOptions()
 
   let unsubscribe = null
   game.subscribe( value => {
@@ -43,6 +42,7 @@
   })
 
   function clickStartGame() {
+    setDefaultTimeLimit( game_options.time_limit )
     game.start( game_options )
     is_finished = false
   }

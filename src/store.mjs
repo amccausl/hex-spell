@@ -48,13 +48,14 @@ async function loadDictionary() {
 }
 loadDictionary()
 
+const TIME_LIMIT_KEY = "options_time_limit"
 export function getDefaultOptions() {
   const default_options = {
     time_limit: 180,
   }
 
   try {
-    const time_limit = window.localStorage.getItem( "options_time_limit" )
+    const time_limit = window.localStorage.getItem( TIME_LIMIT_KEY )
     if( time_limit != null ) {
       default_options.time_limit = parseInt( time_limit, 10 )
     }
@@ -62,6 +63,13 @@ export function getDefaultOptions() {
   }
 
   return default_options
+}
+
+export function setDefaultTimeLimit( time_limit ) {
+  try {
+    window.localStorage.setItem( TIME_LIMIT_KEY, time_limit )
+  } catch( ex ) {
+  }
 }
 
 function shuffleArray( array ) {
