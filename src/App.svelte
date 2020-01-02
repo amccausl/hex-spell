@@ -59,25 +59,27 @@
   <h1 class="page-title">Hex-Spell</h1>
   <div class="page-layout">
     {#if ! is_playing}
-      <form class="w-full max-w-sm inline-block align-middle">
-        <div class="md:flex md:items-center mb-6">
-          <div class="md:w-1/2">
-            <label class="input-label md:text-right md:mb-0" for="options_time_limit">
-              Time Limit
-            </label>
+      <div class="start-page">
+        <form class="w-full max-w-sm inline-block align-middle">
+          <div class="md:flex md:items-center mb-6">
+            <div class="md:w-1/2">
+              <label class="input-label md:text-right md:mb-0" for="options_time_limit">
+                Time Limit
+              </label>
+            </div>
+            <div class="md:w-1/2">
+              <select bind:value={ game_options.time_limit } id="options_time_limit" class="input-select">
+                {#each TIME_LIMIT_OPTIONS as time_limit_option}
+                  <option value={ time_limit_option }>{ getTimeText( time_limit_option ) }</option>
+                {/each}
+              </select>
+            </div>
           </div>
-          <div class="md:w-1/2">
-            <select bind:value={ game_options.time_limit } id="options_time_limit" class="input-select">
-              {#each TIME_LIMIT_OPTIONS as time_limit_option}
-                <option value={ time_limit_option }>{ getTimeText( time_limit_option ) }</option>
-              {/each}
-            </select>
-          </div>
-        </div>
-        <button class="button button-primary" on:click={ clickStartGame }>Start Game</button>
-      </form>
+          <button class="button button-primary" on:click={ clickStartGame }>Start Game</button>
+        </form>
 
-      <HighScores />
+        <HighScores />
+      </div>
     {:else}
       <TileBoard game={ game } />
       <div class="right-pane">
@@ -118,14 +120,19 @@
 
   .page-layout {
     display: flex;
-    flex-direction: column;
     justify-content: center;
-    align-items: center;
   }
 
   .right-pane {
     width: 250px;
     padding-left: 20px;
+  }
+
+  .start-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 
   .board-overlay {
