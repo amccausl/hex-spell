@@ -108,6 +108,7 @@
 <style type="text/scss">
   .board {
     border: solid #43363d 2px;
+    min-width: 877px;
   }
 
   .board-tiles {
