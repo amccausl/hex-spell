@@ -2,11 +2,14 @@
   import {
     BOARD_WIDTH,
     BOARD_HEIGHT,
+    TIME_LIMIT_OPTIONS,
     createGame,
     getDefaultOptions,
     setDefaultTimeLimit,
+    getTimeText,
   } from "./store.mjs"
   import GameTimer from "./GameTimer.svelte"
+  import HighScores from "./HighScores.svelte"
   import ScoreCard from "./ScoreCard.svelte"
   import Tailwindcss from "./Tailwindcss.svelte"
   import TileBoard from "./TileBoard.svelte"
@@ -65,16 +68,16 @@
           </div>
           <div class="md:w-1/2">
             <select bind:value={ game_options.time_limit } id="options_time_limit" class="input-select">
-              <option value={ 60 }>1:00</option>
-              <option value={ 120 }>2:00</option>
-              <option value={ 180 }>3:00</option>
-              <option value={ 240 }>4:00</option>
-              <option value={ 300 }>5:00</option>
+              {#each TIME_LIMIT_OPTIONS as time_limit_option}
+                <option value={ time_limit_option }>{ getTimeText( time_limit_option ) }</option>
+              {/each}
             </select>
           </div>
         </div>
         <button class="button button-primary" on:click={ clickStartGame }>Start Game</button>
       </form>
+
+      <HighScores />
     {:else}
       <TileBoard game={ game } />
       <div class="right-pane">
@@ -115,7 +118,9 @@
 
   .page-layout {
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
   }
 
   .right-pane {
@@ -170,7 +175,7 @@
       @apply
         outline-none
         bg-white
-        border-primary;
+        border-selected;
     }
   }
 

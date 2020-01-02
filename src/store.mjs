@@ -1,4 +1,4 @@
-import { derived, readable, writable } from "svelte/store"
+import { derived, get, readable, writable } from "svelte/store"
 
 export const AVAILABLE_TILES = [
   ...Array( 24 ).fill( "E" ),
@@ -33,6 +33,14 @@ export const AVAILABLE_TILES_COUNT = AVAILABLE_TILES.length
 export const GAME_TIMER = 120
 export const BOARD_WIDTH = 9
 export const BOARD_HEIGHT = 7 * 2
+
+export const TIME_LIMIT_OPTIONS = [
+  60,
+  120,
+  180,
+  240,
+  300,
+]
 
 // @todo this is an unsafe async
 let dictionary
@@ -69,6 +77,23 @@ export function setDefaultTimeLimit( time_limit ) {
   try {
     window.localStorage.setItem( TIME_LIMIT_KEY, time_limit )
   } catch( ex ) {
+  }
+}
+
+const SCORES_KEY = "scores"
+export function getHighScores() {
+  try {
+    return JSON.parse( window.localStorage.getItem( SCORES_KEY ) )
+  } catch( ex ) {
+    return null
+  }
+}
+
+function setHighScores( high_scores ) {
+  try {
+    window.localStorage.setItem( SCORES_KEY, JSON.stringify( high_scores ) )
+  } catch( ex ) {
+    return null
   }
 }
 
@@ -132,6 +157,13 @@ function createScoreCard() {
     ),
     reset: () => set( { score: 0, matched_words: [] } )
   }
+}
+
+export function getTimeText( seconds ) {
+  if( seconds < 0 ) {
+    return "0:00"
+  }
+  return `${ Math.floor( seconds / 60 ) }:${ seconds % 60 < 10 ? "0" + ( seconds % 60 ) : seconds % 60 }`
 }
 
 export function getGameTimer() {
@@ -259,24 +291,42 @@ export function createGame( options ) {
       const board_tiles = createBoardTiles( options )
       const score_card = createScoreCard()
       const timer = getGameTimer()
+      const timer_text = derived(
+        timer,
+        $timer => getTimeText( options.time_limit - $timer )
+      )
+      const is_finished = derived(
+        timer,
+        $timer => $timer > options.time_limit
+      )
+
+      const unsubscribe = is_finished.subscribe( value => {
+        if( value ) {
+          const high_scores = getHighScores() || { best_word: "", game_types: TIME_LIMIT_OPTIONS.map( option => ({ time_limit: option, score: 0 }) ) }
+          const game_type = high_scores.game_types.find( game_type => game_type.time_limit === options.time_limit )
+          const score_card_value = get( score_card )
+          if( game_type ) {
+            if( game_type.score < score_card_value.score ) {
+              game_type.score = score_card_value.score
+            }
+          }
+          let best_word_score = getWordScore( high_scores.best_word )
+          for( const matched_word of score_card_value.matched_words ) {
+            const matched_word_score = getWordScore( matched_word )
+            if( matched_word_score > best_word_score ) {
+              high_scores.best_word = matched_word
+              best_word_score = matched_word_score
+            }
+          }
+          setHighScores( high_scores )
+        }
+      } )
 
       return {
         board_tiles,
         score_card,
-        timer_text: derived(
-          timer,
-          $timer => {
-            const remaining = options.time_limit - $timer
-            if( remaining < 0 ) {
-              return "0:00"
-            }
-            return `${ Math.floor( remaining / 60 ) }:${ remaining % 60 < 10 ? "0" + ( remaining % 60 ) : remaining % 60 }`
-          }
-        ),
-        is_finished: derived(
-          timer,
-          $timer => $timer > options.time_limit
-        ),
+        timer_text,
+        is_finished,
       }
     } ),
     isWord: ( word ) => dictionary.isWord( word ),
