@@ -23,10 +23,12 @@
       </thead>
       <tbody>
         {#each high_scores.game_types as game_type}
-          <tr>
-            <td class="border px-4 py-1">{ getTimeText( game_type.time_limit ) }</td>
-            <td class="border px-4 py-1">{ game_type.score }</td>
-          </tr>
+          {#if game_type.score > 0}
+            <tr>
+              <td class="border px-4 py-1">{ getTimeText( game_type.time_limit ) }</td>
+              <td class="border px-4 py-1">{ game_type.score }</td>
+            </tr>
+          {/if}
         {/each}
       </tbody>
     </table>
