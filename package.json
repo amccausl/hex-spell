@@ -5,17 +5,17 @@
     "@fullhuman/postcss-purgecss": "1.3.0",
     "postcss": "7.0.26",
     "postcss-load-config": "2.1.0",
-    "rollup": "1.27.14",
+    "rollup": "1.29.1",
     "rollup-plugin-commonjs": "10.1.0",
     "rollup-plugin-livereload": "1.0.4",
     "rollup-plugin-node-resolve": "5.2.0",
     "rollup-plugin-svelte": "5.1.1",
-    "rollup-plugin-terser": "5.1.3",
+    "rollup-plugin-terser": "5.2.0",
     "sass": "1.24.0",
-    "svelte": "3.16.7",
+    "svelte": "3.17.3",
     "svelte-preprocess": "3.3.0",
     "tailwindcss": "1.1.4",
-    "tap": "14.10.5"
+    "tap": "14.10.6"
   },
   "dependencies": {
     "sirv-cli": "0.4.5"
