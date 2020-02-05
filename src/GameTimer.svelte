@@ -2,12 +2,6 @@
   export let timer
 </script>
 
-<section class="game-timer">
+<section class="text-2xl">
   Timer: { $timer }
 </section>
-
-<style type="text/scss">
-  .game-timer {
-    font-size: 26px;
-  }
-</style>

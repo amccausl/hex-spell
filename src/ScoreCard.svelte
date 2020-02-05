@@ -14,39 +14,19 @@
 </script>
 
 <section class="score-card">
-  <div class="score-total">Score: { score_value }</div>
-  <ul class="word-list">
+  <div class="text-2xl">Score: { score_value }</div>
+  <ul class="word-list list-none text-xl">
     {#each matched_words_value as word}
-      <li class="word-list__item">
-        <span class="word-list__item-text">{ word }</span>
-        <span class="word-list__item-score">{ getWordScore( word ) }</span>
+      <li class="flex flex-row justify-between">
+        <span class="text-left">{ word }</span>
+        <span class="text-right">{ getWordScore( word ) }</span>
       </li>
     {/each}
   </ul>
 </section>
 
 <style type="text/scss">
-  .score-total {
-    font-size: 26px;
-  }
-
   .word-list {
-    font-size: 18px;
-    list-style: none;
     padding-inline-start: 0;
-
-    &__item {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-    }
-
-    &__item-text {
-      text-align: left;
-    }
-
-    &__item-score {
-      text-align: right;
-    }
   }
 </style>

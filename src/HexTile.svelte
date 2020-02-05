@@ -10,7 +10,7 @@
   on:selectstart|preventDefault
 >
   <div class="hex__body">
-    <div class="hex__text">{ tile }</div>
+    <div class="text-4xl">{ tile }</div>
   </div>
 </div>
 
@@ -46,10 +46,6 @@ $hex__size: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-
-  &__text {
-    font-size: 32px;
   }
 
   &--selected {

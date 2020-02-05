@@ -8,7 +8,7 @@
   const high_scores = getHighScores()
 </script>
 
-<section class="high-score-section">
+<section class="flex flex-col items-center text-center p-4 my-0 mx-auto">
   {#if high_scores != null}
     <h2 class="text-2xl">High Scores</h2>
     <div class="py-1">
@@ -34,14 +34,3 @@
     </table>
   {/if}
 </section>
-
-<style type="text/scss">
-  .high-score-section {
-    text-align: center;
-    padding: 1em;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-</style>

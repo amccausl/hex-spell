@@ -57,9 +57,9 @@
 
 <main class="page">
   <h1 class="page-title">Hex-Spell</h1>
-  <div class="page-layout">
+  <div class="flex justify-center">
     {#if ! is_playing}
-      <div class="start-page">
+      <div class="flex flex-col items-center justify-center">
         <form class="w-full max-w-sm inline-block align-middle">
           <div class="md:flex md:items-center mb-6">
             <div class="md:w-1/2">
@@ -82,15 +82,15 @@
       </div>
     {:else}
       <TileBoard game={ game } />
-      <div class="right-pane">
+      <div class="right-pane pl-8">
         <GameTimer timer={ $game.timer_text } />
         <ScoreCard score_card={ $game.score_card } />
       </div>
     {/if}
   </div>
   {#if is_finished}
-    <div class="board-overlay">
-      <div class="board-score">
+    <div class="board-overlay flex flex-row items-center justify-center">
+      <div class="board-score flex flex-row items-center justify-center p-16">
         <button class="button button-primary" on:click={ clickRestart }>Restart</button>
       </div>
     </div>
@@ -125,14 +125,6 @@
 
   .right-pane {
     width: 250px;
-    padding-left: 20px;
-  }
-
-  .start-page {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
   }
 
   .board-overlay {
@@ -142,20 +134,11 @@
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.25);
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
   }
 
   .board-score {
     min-width: 30%;
-    padding: 40px;
     background-color: white;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
   }
 
   .input-label {
