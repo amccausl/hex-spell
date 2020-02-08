@@ -1,6 +1,7 @@
 import commonjs from "rollup-plugin-commonjs"
 import livereload from "rollup-plugin-livereload"
 import resolve from "rollup-plugin-node-resolve"
+import { sizeSnapshot } from "rollup-plugin-size-snapshot"
 import svelte from "rollup-plugin-svelte"
 import { terser } from "rollup-plugin-terser"
 import sveltePreprocess from "svelte-preprocess"
@@ -45,6 +46,8 @@ export default {
     // Watch the `docs` directory and refresh the
     // browser on changes when not in production
     ! production && livereload( "docs" ),
+
+    sizeSnapshot(),
 
     // If we're building for production (npm run build
     // instead of npm run dev), minify

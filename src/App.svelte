@@ -55,7 +55,7 @@
   }
 </script>
 
-<main class="page">
+<main class="page text-center my-0 mx-auto p-4">
   <h1 class="page-title">Hex-Spell</h1>
   <div class="flex justify-center">
     {#if ! is_playing}
@@ -89,7 +89,7 @@
     {/if}
   </div>
   {#if is_finished}
-    <div class="board-overlay flex flex-row items-center justify-center">
+    <div class="board-overlay flex flex-row items-center justify-center w-full h-full fixed inset-0">
       <div class="board-score flex flex-row items-center justify-center p-16">
         <button class="button button-primary" on:click={ clickRestart }>Restart</button>
       </div>
@@ -99,12 +99,6 @@
 <Tailwindcss />
 
 <style type="text/scss">
-  .page {
-    text-align: center;
-    padding: 1em;
-    margin: 0 auto;
-  }
-
   .page-title {
     color: #ff3e00;
     text-transform: uppercase;
@@ -118,21 +112,11 @@
     }
   }
 
-  .page-layout {
-    display: flex;
-    justify-content: center;
-  }
-
   .right-pane {
     width: 250px;
   }
 
   .board-overlay {
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
     background-color: rgba(0, 0, 0, 0.25);
   }
 
