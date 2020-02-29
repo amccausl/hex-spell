@@ -1,4 +1,2 @@
 .nyc_output
 node_modules
-docs/build
-package-lock.json
