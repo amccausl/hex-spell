@@ -57,13 +57,56 @@
 <form>
   <div class="md:flex md:items-center mb-6">
     <div class="md:w-1/2">
-      <label class="input-label md:text-right md:mb-0" for="email">
+      <label for="email" class="md:text-right md:mb-0 block text-black mb-1 pr-4">
         Email
       </label>
     </div>
     <div class="md:w-1/2">
-      <input type="email" bind:value={ email } id="email" />
+      <input id="email" type="email" bind:value={ email } class="input-text"/>
     </div>
   </div>
   <button class="button button-primary" on:click={ login }>Login</button>
 </form>
+
+<style type="text/scss">
+  .input-text {
+    @apply
+      bg-gray-200
+      appearance-none
+      border-2
+      border-gray-200
+      w-full
+      py-2
+      px-4
+      text-gray-700
+      leading-tight;
+
+    &:focus {
+      @apply
+        outline-none
+        bg-white
+        border-selected;
+    }
+  }
+
+  .button {
+    @apply
+      text-2xl
+      py-2
+      px-4
+      border-2
+      border-black;
+
+    &-primary {
+      @apply bg-primary;
+
+      &:hover {
+        @apply bg-selected;
+      }
+
+      &:focus {
+        @apply border-selected;
+      }
+    }
+  }
+</style>
