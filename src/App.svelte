@@ -1,4 +1,6 @@
 <script>
+  import Navago from "navigo"
+
   import {
     BOARD_WIDTH,
     BOARD_HEIGHT,
@@ -8,8 +10,10 @@
     setDefaultTimeLimit,
     getTimeText,
   } from "./store.mjs"
+  import AppBar from "./AppBar.svelte"
   import GameTimer from "./GameTimer.svelte"
   import HighScores from "./HighScores.svelte"
+  import LoginPage from "./LoginPage.svelte"
   import ScoreCard from "./ScoreCard.svelte"
   import Tailwindcss from "./Tailwindcss.svelte"
   import TileBoard from "./TileBoard.svelte"
@@ -53,59 +57,72 @@
   function clickRestart() {
     window.location.reload( false )
   }
+
+  const router = new Navago( "", true )
+
+  let current_page = null
+  router
+    .on({
+      "login"() {
+        console.info('login')
+        current_page = "login"
+      },
+      "*"() {
+        console.info('run main')
+        current_page = "main"
+      },
+    })
+    .resolve()
 </script>
 
+<AppBar />
 <main class="page text-center my-0 mx-auto p-4">
-  <h1 class="page-title">Hex-Spell</h1>
-  <div class="flex justify-center">
-    {#if ! is_playing}
-      <div class="flex flex-col items-center justify-center">
-        <form class="w-full max-w-sm inline-block align-middle">
-          <div class="md:flex md:items-center mb-6">
-            <div class="md:w-1/2">
-              <label class="input-label md:text-right md:mb-0" for="options_time_limit">
-                Time Limit
-              </label>
+  {#if current_page === "login"}
+    <LoginPage/>
+  {:else if current_page === "main"}
+    <div class="flex justify-center">
+      {#if ! is_playing}
+        <div class="flex flex-col items-center justify-center">
+          <form class="w-full max-w-sm inline-block align-middle">
+            <div class="md:flex md:items-center mb-6">
+              <div class="md:w-1/2">
+                <label class="input-label md:text-right md:mb-0" for="options_time_limit">
+                  Time Limit
+                </label>
+              </div>
+              <div class="md:w-1/2">
+                <select bind:value={ game_options.time_limit } id="options_time_limit" class="input-select">
+                  {#each TIME_LIMIT_OPTIONS as time_limit_option}
+                    <option value={ time_limit_option }>{ getTimeText( time_limit_option ) }</option>
+                  {/each}
+                </select>
+              </div>
             </div>
-            <div class="md:w-1/2">
-              <select bind:value={ game_options.time_limit } id="options_time_limit" class="input-select">
-                {#each TIME_LIMIT_OPTIONS as time_limit_option}
-                  <option value={ time_limit_option }>{ getTimeText( time_limit_option ) }</option>
-                {/each}
-              </select>
-            </div>
-          </div>
-          <button class="button button-primary" on:click={ clickStartGame }>Start Game</button>
-        </form>
+            <button class="button button-primary" on:click={ clickStartGame }>Start Game</button>
+          </form>
 
-        <HighScores />
-      </div>
-    {:else}
-      <TileBoard game={ game } />
-      <div class="right-pane pl-8">
-        <GameTimer timer={ $game.timer_text } />
-        <ScoreCard score_card={ $game.score_card } />
+          <HighScores />
+        </div>
+      {:else}
+        <TileBoard game={ game } />
+        <div class="right-pane pl-8">
+          <GameTimer timer={ $game.timer_text } />
+          <ScoreCard score_card={ $game.score_card } />
+        </div>
+      {/if}
+    </div>
+    {#if is_finished}
+      <div class="board-overlay flex flex-row items-center justify-center w-full h-full fixed inset-0">
+        <div class="board-score flex flex-row items-center justify-center p-16">
+          <button class="button button-primary" on:click={ clickRestart }>Restart</button>
+        </div>
       </div>
     {/if}
-  </div>
-  {#if is_finished}
-    <div class="board-overlay flex flex-row items-center justify-center w-full h-full fixed inset-0">
-      <div class="board-score flex flex-row items-center justify-center p-16">
-        <button class="button button-primary" on:click={ clickRestart }>Restart</button>
-      </div>
-    </div>
   {/if}
 </main>
 <Tailwindcss />
 
 <style type="text/scss">
-  .page-title {
-    color: #ff3e00;
-    text-transform: uppercase;
-    font-size: 4em;
-    font-weight: 100;
-  }
-
   @media (min-width: 640px) {
     .page {
       max-width: none;
