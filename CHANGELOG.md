@@ -7,9 +7,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ### Added
 - email login
+- manifest for "add to homescreen" on mobile
 
 ### Changed
 - hide empty scores
+- input label colour to improve accessibility
 
 ## [0.0.3]
 

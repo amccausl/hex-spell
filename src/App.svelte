@@ -69,7 +69,7 @@
       },
       "*"() {
         console.info('run main')
-        current_page = "main"
+        current_page = "start"
       },
     })
     .resolve()
@@ -79,37 +79,37 @@
 <main class="page text-center my-0 mx-auto p-4">
   {#if current_page === "login"}
     <LoginPage/>
-  {:else if current_page === "main"}
+  {:else if is_playing}
     <div class="flex justify-center">
-      {#if ! is_playing}
-        <div class="flex flex-col items-center justify-center">
-          <form class="w-full max-w-sm inline-block align-middle">
-            <div class="md:flex md:items-center mb-6">
-              <div class="md:w-1/2">
-                <label class="input-label md:text-right md:mb-0" for="options_time_limit">
-                  Time Limit
-                </label>
-              </div>
-              <div class="md:w-1/2">
-                <select bind:value={ game_options.time_limit } id="options_time_limit" class="input-select">
-                  {#each TIME_LIMIT_OPTIONS as time_limit_option}
-                    <option value={ time_limit_option }>{ getTimeText( time_limit_option ) }</option>
-                  {/each}
-                </select>
-              </div>
+      <TileBoard game={ game } />
+      <div class="right-pane pl-8">
+        <GameTimer timer={ $game.timer_text } />
+        <ScoreCard score_card={ $game.score_card } />
+      </div>
+    </div>
+  {:else}
+    <div class="flex justify-center">
+      <div class="flex flex-col items-center justify-center">
+        <form class="w-full max-w-sm inline-block align-middle">
+          <div class="md:flex md:items-center mb-6">
+            <div class="md:w-1/2">
+              <label class="md:text-right md:mb-0 block text-black mb-1 pr-4" for="options_time_limit">
+                Time Limit
+              </label>
             </div>
-            <button class="button button-primary" on:click={ clickStartGame }>Start Game</button>
-          </form>
+            <div class="md:w-1/2">
+              <select bind:value={ game_options.time_limit } id="options_time_limit" class="input-select">
+                {#each TIME_LIMIT_OPTIONS as time_limit_option}
+                  <option value={ time_limit_option }>{ getTimeText( time_limit_option ) }</option>
+                {/each}
+              </select>
+            </div>
+          </div>
+          <button class="button button-primary" on:click={ clickStartGame }>Start Game</button>
+        </form>
 
-          <HighScores />
-        </div>
-      {:else}
-        <TileBoard game={ game } />
-        <div class="right-pane pl-8">
-          <GameTimer timer={ $game.timer_text } />
-          <ScoreCard score_card={ $game.score_card } />
-        </div>
-      {/if}
+        <HighScores />
+      </div>
     </div>
     {#if is_finished}
       <div class="board-overlay flex flex-row items-center justify-center w-full h-full fixed inset-0">
@@ -140,14 +140,6 @@
   .board-score {
     min-width: 30%;
     background-color: white;
-  }
-
-  .input-label {
-    @apply
-      block
-      text-gray-500
-      mb-1
-      pr-4;
   }
 
   .input-select {
@@ -183,6 +175,10 @@
 
       &:hover {
         @apply bg-selected;
+      }
+
+      &:focus {
+        @apply border-selected;
       }
     }
   }
