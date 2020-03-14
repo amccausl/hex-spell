@@ -1,14 +1,15 @@
 {
-  "background_color": "#F2EEC3",
+  "background_color": "#f2eeC3",
   "display": "fullscreen",
   "icons": [
     {
-      "src": "favicon.png",
+      "src": "/icons/192.png",
       "sizes": "192x192",
       "type": "image/png"
     }
   ],
   "name": "hex-spell",
   "short_name": "hex-spell",
-  "start_url": "/"
+  "start_url": "/",
+  "theme_color": "#ffffff"
 }
