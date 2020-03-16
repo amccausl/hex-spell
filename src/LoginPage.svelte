@@ -4,12 +4,13 @@
   function login( e ) {
     console.info( "login", email, e )
     e.preventDefault()
-    var actionCodeSettings = {
-      url: 'http://localhost:5000/#login',
+    var auth_link_settings = {
+      // @todo env based
+      url: 'http://localhost:5000/#verify',
       handleCodeInApp: true,
     }
 
-    firebase.auth().sendSignInLinkToEmail( email, actionCodeSettings )
+    firebase.auth().sendSignInLinkToEmail( email, auth_link_settings )
       .then( () => {
         console.info('then', email)
         window.localStorage.setItem( 'emailForSignIn', email )
@@ -65,7 +66,7 @@
       <input id="email" type="email" bind:value={ email } class="input-text"/>
     </div>
   </div>
-  <button class="button button-primary" on:click={ login }>Login</button>
+  <button class="button button-primary" on:click={ login }>Send Login Link</button>
 </form>
 
 <style type="text/scss">

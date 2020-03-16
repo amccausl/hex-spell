@@ -17,6 +17,10 @@
   import ScoreCard from "./ScoreCard.svelte"
   import Tailwindcss from "./Tailwindcss.svelte"
   import TileBoard from "./TileBoard.svelte"
+  import VerifyPage from "./VerifyPage.svelte"
+
+  const database = firebase.database()
+  console.info( "user id:", firebase.auth().currentUser )
 
   let is_playing = false
   let is_finished = false
@@ -67,6 +71,10 @@
         console.info('login')
         current_page = "login"
       },
+      "verify"() {
+        console.info('verify')
+        current_page = "verify"
+      },
       "*"() {
         console.info('run main')
         current_page = "start"
@@ -79,6 +87,8 @@
 <main class="page text-center my-0 mx-auto p-4">
   {#if current_page === "login"}
     <LoginPage/>
+  {:else if current_page === "verify"}
+    <VerifyPage/>
   {:else if is_playing}
     <div class="flex justify-center">
       <TileBoard game={ game } />
@@ -87,6 +97,13 @@
         <ScoreCard score_card={ $game.score_card } />
       </div>
     </div>
+    {#if is_finished}
+      <div class="board-overlay flex flex-row items-center justify-center w-full h-full fixed inset-0">
+        <div class="board-score flex flex-row items-center justify-center p-16">
+          <button class="button button-primary" on:click={ clickRestart }>Restart</button>
+        </div>
+      </div>
+    {/if}
   {:else}
     <div class="flex justify-center">
       <div class="flex flex-col items-center justify-center">
@@ -111,13 +128,6 @@
         <HighScores />
       </div>
     </div>
-    {#if is_finished}
-      <div class="board-overlay flex flex-row items-center justify-center w-full h-full fixed inset-0">
-        <div class="board-score flex flex-row items-center justify-center p-16">
-          <button class="button button-primary" on:click={ clickRestart }>Restart</button>
-        </div>
-      </div>
-    {/if}
   {/if}
 </main>
 <Tailwindcss />

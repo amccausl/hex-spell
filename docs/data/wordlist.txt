@@ -104288,6 +104288,7 @@ handstroke
 handstrokes
 handsturn
 handsturns
+handsy
 handtowel
 handtowels
 handwheel
