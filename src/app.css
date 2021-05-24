@@ -1,0 +1,21 @@
+
+.button {
+	@apply
+		text-2xl
+		py-2
+		px-4
+		border-2
+		border-black;
+}
+
+.button-primary {
+	@apply bg-primary;
+}
+
+.button-primary:hover {
+	@apply bg-selected;
+}
+
+.button-primary:focus {
+	/* @apply border-selected; */
+}

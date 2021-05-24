@@ -1,31 +1,31 @@
 {
   "name": "hex-spell",
   "version": "0.0.3",
-  "devDependencies": {
-    "@fullhuman/postcss-purgecss": "2.3.0",
-    "navigo": "^7.1.2",
-    "postcss": "7.0.32",
-    "postcss-load-config": "2.1.0",
-    "rollup": "2.26.8",
-    "rollup-plugin-commonjs": "10.1.0",
-    "rollup-plugin-livereload": "2.0.0",
-    "rollup-plugin-node-resolve": "5.2.0",
-    "rollup-plugin-size-snapshot": "0.12.0",
-    "rollup-plugin-svelte": "6.0.0",
-    "rollup-plugin-terser": "7.0.1",
-    "sass": "1.26.10",
-    "svelte": "3.24.1",
-    "svelte-preprocess": "4.2.0",
-    "tailwindcss": "1.7.6",
-    "tap": "14.10.8"
-  },
-  "dependencies": {
-    "sirv-cli": "1.0.6"
-  },
   "scripts": {
-    "build": "rollup -c",
-    "dev": "rollup -c -w",
-    "start": "sirv docs",
-    "test": "$(npm bin)/tap test"
+    "dev": "svelte-kit dev --host",
+    "build": "svelte-kit build",
+    "preview": "svelte-kit preview --host",
+    "lint": "eslint --ignore-path .gitignore ."
+  },
+  "devDependencies": {
+    "@sveltejs/adapter-static": "^1.0.0-next.11",
+    "@sveltejs/kit": "1.0.0-next.109",
+    "@typescript-eslint/eslint-plugin": "^4.24.0",
+    "@typescript-eslint/parser": "^4.24.0",
+    "autoprefixer": "^10.2.5",
+    "eslint": "^7.27.0",
+    "eslint-plugin-svelte3": "^3.2.0",
+    "node-sass": "^6.0.0",
+    "svelte": "^3.34.0",
+    "svelte-preprocess": "^4.0.0",
+    "tailwindcss": "^2.1.2",
+    "tslib": "^2.0.0",
+    "typescript": "^4.0.0"
+  },
+  "type": "module",
+  "dependencies": {
+    "@fontsource/fira-mono": "^4.2.2",
+    "@lukeed/uuid": "^2.0.0",
+    "cookie": "^0.4.1"
   }
 }
